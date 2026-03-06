@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard — Tesla Currency Team</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <link rel="icon" href="logo.png" type="image/png">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+
+<body>
+
+    <div class="bg-grid"></div>
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <div class="dashboard">
+
+        <!-- SIDEBAR -->
+        <!-- Sidebar mobile backdrop -->
+        <div class="sidebar-backdrop" id="sidebarBackdrop" onclick="toggleSidebar()"></div>
+
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-brand">
+                    <div class="sidebar-logo-mark">
+                        <img src="logo.png" alt="TCT Logo" style="width:24px;height:24px;object-fit:contain;">
+                    </div>
+                    <div class="sidebar-brand-text">
+                        <div class="s-brand-name">Tesla Currency</div>
+                        <div class="s-brand-sub">Investment Team</div>
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar-section-label">Navigation</div>
+            <nav class="sidebar-nav">
+                <div class="nav-item active" data-section="overview" onclick="switchSection('overview')"><span
+                        class="nav-icon"><i class="bi bi-bar-chart-fill"></i></span><span>Overview</span></div>
+                <div class="nav-item" data-section="portfolio" onclick="switchSection('portfolio')"><span
+                        class="nav-icon"><i class="bi bi-briefcase-fill"></i></span><span>Portfolio</span></div>
+                <div class="nav-item" data-section="tiers" onclick="switchSection('tiers')"><span class="nav-icon"><i
+                            class="bi bi-layers-fill"></i></span><span>Investment Planes</span></div>
+                <div class="nav-item" data-section="withdraw" onclick="switchSection('withdraw')"><span
+                        class="nav-icon"><i class="bi bi-credit-card-fill"></i></span><span>Withdraw</span></div>
+                <div class="nav-item" data-section="messages" onclick="switchSection('messages')"><span
+                        class="nav-icon"><i class="bi bi-envelope-fill"></i></span><span>Messages</span><span
+                        class="nav-badge">2</span></div>
+                <div class="nav-item" data-section="idcard" onclick="switchSection('idcard')"><span class="nav-icon"><i
+                            class="bi bi-person-badge-fill"></i></span><span>My ID Card</span></div>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="sidebar-user-card">
+                    <div class="sidebar-avatar" id="sidebarAvatar">G</div>
+                    <div class="sidebar-user-info">
+                        <div class="u-name" id="sidebarName">Galit</div>
+                        <div class="u-role">Premium Investor</div>
+                    </div>
+                </div>
+                <button class="sidebar-logout-btn" onclick="handleLogout()"><i class="bi bi-box-arrow-right"></i> Sign
+                    Out</button>
+            </div>
+        </aside>
+
+        <!-- MAIN -->
+        <main class="main-content">
+            <div class="topbar">
+                <div class="topbar-left">
+                    <button class="mobile-menu-btn" onclick="toggleSidebar()"><i class="bi bi-list"></i></button>
+                    <div class="topbar-title">
+                        <h2 id="pageTitle">Dashboard Overview</h2>
+                        <div class="topbar-sub"><span class="live-dot"></span>Live · <span id="topbarDate">March 5,
+                                2026</span></div>
+                    </div>
+                </div>
+                <div class="topbar-right">
+                    <div class="topbar-date" id="topbarDateFull">Thu, March 5, 2026</div>
+                    <button class="notification-btn" onclick="switchSection('messages')"><i
+                            class="bi bi-bell-fill"></i><span class="notification-badge"></span></button>
+                    <div class="topbar-avatar" id="topbarAvatar">G</div>
+                </div>
+            </div>
+
+            <div class="page-content">
+
+                <!-- ===== OVERVIEW ===== -->
+                <div class="dashboard-section active" id="section-overview">
+
+                    <!-- Hero Glass Balance Card -->
+                    <div class="hero-glass-card">
+                        <div class="hgc-inner">
+                            <div>
+                                <div class="hgc-label">Total Portfolio Value</div>
+                                <div class="hgc-balance">
+                                    $<span id="balanceWhole">8,500</span>.<span class="decimals"
+                                        id="balanceDec">00</span>
+                                </div>
+                                <div class="hgc-sub">
+                                    Initial: <strong id="initialInvest">$1,000.00</strong> &nbsp;·&nbsp;
+                                    <span class="hgc-badge"><span class="pulse-green"></span><i
+                                            class="bi bi-caret-up-fill"></i> +850.0% all-time</span>
+                                </div>
+                            </div>
+                            <div class="hgc-stats">
+                                <div class="hgc-stat">
+                                    <div class="hgc-stat-lbl">Total Profit</div>
+                                    <div class="hgc-stat-val green" id="totalProfit">+$7,500.00</div>
+                                </div>
+                                <div class="hgc-stat">
+                                    <div class="hgc-stat-lbl">Investment Tier</div>
+                                    <div class="hgc-stat-val" id="currentTierDisplay">Plane 1</div>
+                                </div>
+                                <div class="hgc-stat">
+                                    <div class="hgc-stat-lbl">Today's Gain</div>
+                                    <div class="hgc-stat-val green">+$412.50</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stat Cards Row -->
+                    <div class="stats-row">
+                        <div class="stat-glass">
+                            <div class="stat-icon si-blue"><i class="bi bi-gem"></i></div>
+                            <div class="stat-label">Portfolio Value</div>
+                            <div class="stat-value" id="portfolioValue">$8,500.00</div>
+                            <div class="stat-change positive"><i class="bi bi-caret-up-fill"></i> +750.0%</div>
+                        </div>
+                        <div class="stat-glass">
+                            <div class="stat-icon si-green"><i class="bi bi-graph-up-arrow"></i></div>
+                            <div class="stat-label">Total Profit</div>
+                            <div class="stat-value" id="totalProfitCard">+$7,500.00</div>
+                            <div class="stat-change positive"><i class="bi bi-caret-up-fill"></i> Rising</div>
+                        </div>
+                        <div class="stat-glass">
+                            <div class="stat-icon si-gold"><i class="bi bi-credit-card-fill"></i></div>
+                            <div class="stat-label">Available to Withdraw</div>
+                            <div class="stat-value" id="withdrawAmount">$8,500.00</div>
+                            <div class="stat-change positive" style="cursor:pointer;"
+                                onclick="switchSection('withdraw')"><i class="bi bi-arrow-right"></i> Withdraw</div>
+                        </div>
+                        <div class="stat-glass">
+                            <div class="stat-icon si-red"><i class="bi bi-cash-stack"></i></div>
+                            <div class="stat-label">Initial Investment</div>
+                            <div class="stat-value" id="initialInvestCard">$1,000.00</div>
+                        </div>
+                    </div>
+
+                    <!-- Chart -->
+                    <div class="chart-glass-card">
+                        <div class="cgc-header">
+                            <div>
+                                <div class="cgc-title">Investment Growth</div>
+                                <div class="cgc-sub">Live portfolio performance</div>
+                            </div>
+                            <div class="chart-filters">
+                                <button class="chart-filter-btn" onclick="updateChart('1W')">1W</button>
+                                <button class="chart-filter-btn" onclick="updateChart('1M')">1M</button>
+                                <button class="chart-filter-btn active" onclick="updateChart('3M')">3M</button>
+                                <button class="chart-filter-btn" onclick="updateChart('1Y')">1Y</button>
+                                <button class="chart-filter-btn" onclick="updateChart('ALL')">ALL</button>
+                            </div>
+                        </div>
+                        <div class="chart-canvas-wrap"><canvas id="investmentChart"></canvas></div>
+                    </div>
+
+                    <!-- Recent Transactions -->
+                    <div class="chart-section">
+                        <div class="chart-header">
+                            <h3>Recent Activity</h3>
+                            <div class="card-sub">Latest account events</div>
+                        </div>
+                        <table class="transactions-table">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Description</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>08:30 AM</td>
+                                    <td>Account Growth</td>
+                                    <td style="color:var(--success);font-weight:600;">+$7,500.00</td>
+                                    <td><span class="status-badge completed"><i class="bi bi-check-lg"></i>
+                                            Completed</span></td>
+                                </tr>
+                                <tr>
+                                    <td>09:00 AM</td>
+                                    <td>Investment Deposit</td>
+                                    <td style="color:var(--calypso-light);font-weight:600;">$1,000.00</td>
+                                    <td><span class="status-badge completed"><i class="bi bi-check-lg"></i>
+                                            Completed</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ===== PORTFOLIO ===== -->
+                <div class="dashboard-section" id="section-portfolio">
+                    <div class="section-header-row">
+                        <div>
+                            <div class="section-title">Portfolio Performance</div>
+                            <div class="section-desc">Detailed breakdown across all time periods and asset classes.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="perf-grid">
+                        <div class="perf-card">
+                            <div class="perf-icon si-green"><i class="bi bi-calendar-check-fill"></i></div>
+
+                            <div class="perf-label">Today</div>
+                            <div class="perf-value green">+$412.50</div>
+                            <div class="perf-pct positive"><i class="bi bi-caret-up-fill"></i> +4.5%</div>
+                        </div>
+                        <div class="perf-card">
+                            <div class="perf-icon si-blue"><i class="bi bi-calendar-week-fill"></i></div>
+
+                            <div class="perf-label">7-Day</div>
+                            <div class="perf-value green">+$2,450.80</div>
+                            <div class="perf-pct positive"><i class="bi bi-caret-up-fill"></i> +34.2%</div>
+                        </div>
+                        <div class="perf-card">
+                            <div class="perf-icon si-gold"><i class="bi bi-bar-chart-line-fill"></i></div>
+
+                            <div class="perf-label">30-Day</div>
+                            <div class="perf-value green">+$5,840.12</div>
+                            <div class="perf-pct positive"><i class="bi bi-caret-up-fill"></i> +152.4%</div>
+                        </div>
+                        <div class="perf-card">
+                            <div class="perf-icon si-red"><i class="bi bi-trophy-fill"></i></div>
+
+                            <div class="perf-label">All-Time</div>
+                            <div class="perf-value green">+$7,500.00</div>
+                            <div class="perf-pct positive"><i class="bi bi-caret-up-fill"></i> +750.0%</div>
+                        </div>
+                    </div>
+                    <div class="asset-section">
+                        <div class="asset-section-title">Asset Allocation</div>
+                        <div>
+                            <div class="asset-row">
+                                <div class="asset-icon" style="background:#f7931a;"><i
+                                        class="bi bi-currency-bitcoin"></i></div>
+
+                                <div>
+                                    <div class="asset-name">Bitcoin (BTC)</div>
+                                    <div class="asset-sub">45% of portfolio</div>
+                                </div>
+                                <div class="asset-bar-wrap">
+                                    <div class="asset-bar"
+                                        style="width:45%;background:#f7931a;box-shadow:0 0 8px rgba(247,147,26,0.4);">
+                                    </div>
+                                </div>
+                                <div class="asset-pct">45%</div>
+                            </div>
+                            <div class="asset-row">
+                                <div class="asset-icon" style="background:#627eea;"><i
+                                        class="bi bi-currency-exchange"></i></div>
+
+                                <div>
+                                    <div class="asset-name">Ethereum (ETH)</div>
+                                    <div class="asset-sub">30% of portfolio</div>
+                                </div>
+                                <div class="asset-bar-wrap">
+                                    <div class="asset-bar"
+                                        style="width:30%;background:#627eea;box-shadow:0 0 8px rgba(98,126,234,0.4);">
+                                    </div>
+                                </div>
+                                <div class="asset-pct">30%</div>
+                            </div>
+                            <div class="asset-row">
+                                <div class="asset-icon" style="background:var(--calypso);"><i
+                                        class="bi bi-currency-dollar"></i></div>
+
+                                <div>
+                                    <div class="asset-name">Forex &amp; Commodities</div>
+                                    <div class="asset-sub">25% of portfolio</div>
+                                </div>
+                                <div class="asset-bar-wrap">
+                                    <div class="asset-bar"
+                                        style="width:25%;background:var(--calypso);box-shadow:0 0 8px var(--calypso-glow);">
+                                    </div>
+                                </div>
+                                <div class="asset-pct">25%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== PLANES (TIERS) ===== -->
+                <div class="dashboard-section" id="section-tiers">
+                    <div class="planes-header">
+                        <div class="planes-title">Investment Planes</div>
+                        <div class="planes-sub">Track your journey across each investment plane. Complete a plane to
+                            unlock the next level.</div>
+                    </div>
+                    <div class="planes-track">
+
+                        <!-- Plane 1 — Completed -->
+                        <div class="plane-card plane-completed" id="tierCard1">
+                            <div class="plane-completed-badge"><i class="bi bi-check-circle-fill"></i> Starter —
+                                Completed</div>
+                            <div class="plane-name">Plane 1</div>
+                            <div class="plane-amounts">
+                                <div class="pa-row"><span class="pa-lbl">Invest</span><span class="pa-val">$1,000</span>
+                                </div>
+                                <div class="pa-row"><span class="pa-lbl">Return</span><span
+                                        class="pa-val green">$10,000</span></div>
+                            </div>
+                            <div class="tier-progress">
+                                <div class="tier-progress-bar" style="width:100%;"></div>
+                            </div>
+                            <div class="tier-progress-text">100% Completed</div>
+
+                            <!-- Accordion Dropdown -->
+                            <div class="plane-dropdown-toggle" onclick="togglePlaneDetails(this)">
+                                <span>View Benefits</span>
+                                <i class="bi bi-chevron-down"></i>
+                            </div>
+                            <div class="plane-details">
+                                <ul class="plane-benefits">
+                                    <li><i class="bi bi-check2"></i> Basic Market Analysis</li>
+                                    <li><i class="bi bi-check2"></i> Standard Support</li>
+                                    <li><i class="bi bi-check2"></i> 5% Profit Share</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Plane 2 — Active -->
+                        <div class="plane-card plane-active" id="tierCard2" style="position:relative;">
+                            <div class="plane-active-badge"><span class="pulse-dot"></span> Active Goal</div>
+                            <div class="plane-name">Plane 2</div>
+                            <div class="plane-amounts">
+                                <div class="pa-row"><span class="pa-lbl">Invest</span><span class="pa-val">$3,000</span>
+                                </div>
+                                <div class="pa-row"><span class="pa-lbl">Return</span><span
+                                        class="pa-val green">$30,000</span></div>
+                            </div>
+                            <div class="tier-progress">
+                                <div class="tier-progress-bar" style="width:28.3%;"></div>
+                            </div>
+                            <div class="tier-progress-text">$8,500 towards $30,000</div>
+                        </div>
+
+                        <!-- Plane 3 — Locked -->
+                        <div class="plane-card plane-locked" id="tierCard3" style="position:relative;">
+                            <div class="plane-tooltip">Required: $5,000 Total Equity</div>
+                            <div class="plane-locked-inner">
+                                <div
+                                    style="font-size:11px;color:var(--text-3);margin-bottom:12px;text-transform:uppercase;letter-spacing:1px;">
+                                    Premium</div>
+                                <div class="plane-name">Plane 3</div>
+                                <div class="plane-amounts">
+                                    <div class="pa-row"><span class="pa-lbl">Invest</span><span
+                                            class="pa-val">$5,000</span></div>
+                                    <div class="pa-row"><span class="pa-lbl">Return</span><span
+                                            class="pa-val green">$50,000</span></div>
+                                </div>
+                                <div class="tier-progress">
+                                    <div class="tier-progress-bar" style="width:0%;"></div>
+                                </div>
+                                <div class="tier-progress-text">Locked</div>
+                            </div>
+                            <div class="plane-locked-overlay">
+                                <div class="lock-icon"><i class="bi bi-lock-fill"></i></div>
+                                <div class="lock-text">Complete Plane 2 to unlock</div>
+                            </div>
+                        </div>
+
+                        <!-- Plane 4 — Locked -->
+                        <div class="plane-card plane-locked" id="tierCard4" style="position:relative;">
+                            <div class="plane-tooltip">Required: $10,000 Total Equity</div>
+                            <div class="plane-locked-inner">
+                                <div class="plane-name">Plane 4</div>
+                                <div class="plane-amounts">
+                                    <div class="pa-row"><span class="pa-lbl">Invest</span><span
+                                            class="pa-val">$10,000</span></div>
+                                    <div class="pa-row"><span class="pa-lbl">Return</span><span
+                                            class="pa-val green">$100,000</span></div>
+                                </div>
+                                <div class="tier-progress">
+                                    <div class="tier-progress-bar" style="width:0%;"></div>
+                                </div>
+                                <div class="tier-progress-text">Locked</div>
+                            </div>
+                            <div class="plane-locked-overlay">
+                                <div class="lock-icon"><i class="bi bi-lock-fill"></i></div>
+                                <div class="lock-text">Required: $10,000 equity</div>
+                            </div>
+                        </div>
+
+                        <!-- Plane 5 — Locked -->
+                        <div class="plane-card plane-locked" id="tierCard5" style="position:relative;">
+                            <div class="plane-tooltip">Required: $25,000 Total Equity</div>
+                            <div class="plane-locked-inner">
+                                <div class="plane-name">Plane 5</div>
+                                <div class="plane-amounts">
+                                    <div class="pa-row"><span class="pa-lbl">Invest</span><span
+                                            class="pa-val">$25,000</span></div>
+                                    <div class="pa-row"><span class="pa-lbl">Return</span><span
+                                            class="pa-val green">$250,000</span></div>
+                                </div>
+                                <div class="tier-progress">
+                                    <div class="tier-progress-bar" style="width:0%;"></div>
+                                </div>
+                                <div class="tier-progress-text">Locked</div>
+                            </div>
+                            <div class="plane-locked-overlay">
+                                <div class="lock-icon"><i class="bi bi-star-fill"></i></div>
+
+                                <div class="lock-text">Diamond — $25,000 equity</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- ===== WITHDRAW ===== -->
+                <div class="dashboard-section" id="section-withdraw">
+                    <div class="section-header-row">
+                        <div>
+                            <div class="section-title">Withdraw Funds</div>
+                            <div class="section-desc">Request a withdrawal from your available balance.</div>
+                        </div>
+                    </div>
+                    <div class="withdraw-layout">
+                        <div class="withdraw-hero">
+                            <div class="wh-label">Available Balance</div>
+                            <div class="withdraw-amount" id="withdrawAmountDisplay">$8,500.00</div>
+                            <div class="wh-sub">Earnings from your active Plane 1 investment</div>
+                            <button class="btn btn-gold btn-withdraw" id="withdrawBtn" onclick="handleWithdraw()"><i
+                                    class="bi bi-credit-card-fill"></i>
+                                &nbsp;Request Withdrawal</button>
+                            <div class="wh-note"><i class="bi bi-exclamation-triangle-fill"
+                                    style="color:var(--gold);"></i> Plane 2 upgrade required for withdrawal
+                            </div>
+                        </div>
+                        <div class="withdraw-info-col">
+                            <div class="wi-card">
+                                <div class="wi-icon"><i class="bi bi-bank"></i></div>
+
+                                <div>
+                                    <div class="wi-title">Bank Transfer</div>
+                                    <div class="wi-desc">Direct to your linked bank account within 5–7 business days
+                                        after verification.</div>
+                                </div>
+                            </div>
+                            <div class="wi-card">
+                                <div class="wi-icon"><i class="bi bi-currency-bitcoin"></i></div>
+
+                                <div>
+                                    <div class="wi-title">Crypto Wallet</div>
+                                    <div class="wi-desc">BTC or ETH withdrawal to your personal wallet. Processed within
+                                        24 hours.</div>
+                                </div>
+                            </div>
+                            <div class="wi-card">
+                                <div class="wi-icon"><i class="bi bi-shield-lock-fill"></i></div>
+
+                                <div>
+                                    <div class="wi-title">Plane Transition Required</div>
+                                    <div class="wi-desc">Your account must successfully transition to Plane 2 ($30,000)
+                                        to unlock payouts.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart-section">
+                        <div class="chart-header">
+                            <h3>Withdrawal History</h3>
+                        </div>
+                        <table class="transactions-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Amount</th>
+                                    <th>Method</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="4" style="text-align:center;color:var(--text-3);padding:40px 0;">No
+                                        withdrawal history yet</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ===== MESSAGES ===== -->
+                <div class="dashboard-section" id="section-messages">
+                    <div class="section-header-row">
+                        <div>
+                            <div class="section-title">Messages</div>
+                            <div class="section-desc">Official communications from your account management team.</div>
+                        </div>
+                    </div>
+                    <div id="messagesContainer"></div>
+                </div>
+
+                <!-- ===== ID CARD ===== -->
+                <div class="dashboard-section" id="section-idcard">
+                    <div class="section-header-row">
+                        <div>
+                            <div class="section-title">Investor ID Card</div>
+                            <div class="section-desc">Your official Tesla Currency Team credentials.</div>
+                        </div>
+                    </div>
+                    <div class="idcard-layout">
+                        <div class="id-card">
+                            <div class="id-card-content">
+                                <div class="id-card-top">
+                                    <div class="id-card-brand">
+                                        <div class="id-card-brand-icon">
+                                            <img src="logo.png" alt="TCT Logo"
+                                                style="width:20px;height:20px;object-fit:contain;">
+                                        </div>
+                                        <div class="id-card-brand-name">Tesla Currency Team</div>
+                                    </div>
+                                    <div class="id-card-badge"><i class="bi bi-check-lg"></i> Verified</div>
+                                </div>
+                                <div class="id-card-body">
+                                    <div class="id-card-avatar" id="cardAvatar"><img
+                                            src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&h=150&fit=crop&q=80"
+                                            alt="Avatar"
+                                            style="width:100%; height:100%; object-fit:cover; border-radius:50%;"></div>
+                                    <div class="id-card-details">
+                                        <h3 id="cardName">Galit</h3>
+
+                                        <p id="cardTier">Plane 2 — Growth</p>
+                                        <div class="id-card-id" id="cardId">ID: TCT-2024-001</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="idcard-details-col">
+                            <div class="chart-section-glass">
+                                <div class="chart-section-glass-title">Account Details</div>
+                                <table class="transactions-table">
+                                    <tbody>
+                                        <tr>
+                                            <td style="color:var(--text-3);">Account Status</td>
+                                            <td><span class="status-badge completed"><i class="bi bi-check-lg"></i>
+                                                    Active</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="color:var(--text-3);">Registration Status</td>
+                                            <td><span class="status-badge pending" id="regStatus"><i
+                                                        class="bi bi-hourglass-split"></i> Partial</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="color:var(--text-3);">Member Since</td>
+                                            <td id="cardJoinDate">February 20, 2026</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="color:var(--text-3);">Account Type</td>
+                                            <td>Premium Investor</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="color:var(--text-3);">Withdrawal Payouts</td>
+                                            <td><span class="status-badge pending"
+                                                    style="background:rgba(255,193,7,0.15);color:#ffc107;"><i
+                                                        class="bi bi-lock-fill"></i> Locked (Plane 2 Req.)</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div><!-- /page-content -->
+
+            <!-- BOTTOM TICKER -->
+            <div class="ticker-bottom">
+                <div class="ticker-track">
+                    <span class="ticker-item"><span class="t-name">TSLA</span><span class="t-price">$248.50</span><span
+                            class="t-chg positive"><i class="bi bi-caret-up-fill"></i> 3.1%</span></span>
+                    <span class="ticker-sep">·</span>
+                    <span class="ticker-item"><span class="t-name">BTC/USD</span><span
+                            class="t-price">$67,842</span><span class="t-chg positive"><i
+                                class="bi bi-caret-up-fill"></i> 2.4%</span></span>
+                    <span class="ticker-sep">·</span>
+                    <span class="ticker-item"><span class="t-name">ETH/USD</span><span
+                            class="t-price">$3,521</span><span class="t-chg positive"><i
+                                class="bi bi-caret-up-fill"></i> 1.7%</span></span>
+                    <span class="ticker-sep">·</span>
+                    <span class="ticker-item"><span class="t-name">EUR/USD</span><span
+                            class="t-price">1.0842</span><span class="t-chg negative"><i
+                                class="bi bi-caret-down-fill"></i> 0.1%</span></span>
+                    <span class="ticker-sep">·</span>
+                    <span class="ticker-item"><span class="t-name">GBP/USD</span><span
+                            class="t-price">1.2651</span><span class="t-chg positive"><i
+                                class="bi bi-caret-up-fill"></i> 0.3%</span></span>
+                    <span class="ticker-sep">·</span>
+                    <span class="ticker-item"><span class="t-name">GOLD</span><span class="t-price">$2,148</span><span
+                            class="t-chg positive"><i class="bi bi-caret-up-fill"></i> 0.8%</span></span>
+                    <span class="ticker-sep">·</span>
+                    <span class="ticker-item"><span class="t-name">S&amp;P 500</span><span
+                            class="t-price">5,137</span><span class="t-chg positive"><i class="bi bi-caret-up-fill"></i>
+                            0.5%</span></span>
+                    <span class="ticker-sep">·</span>
+                    <span class="ticker-item"><span class="t-name">TSLA</span><span class="t-price">$248.50</span><span
+                            class="t-chg positive"><i class="bi bi-caret-up-fill"></i> 3.1%</span></span>
+                    <span class="ticker-sep">·</span>
+                    <span class="ticker-item"><span class="t-name">BTC/USD</span><span
+                            class="t-price">$67,842</span><span class="t-chg positive"><i
+                                class="bi bi-caret-up-fill"></i> 2.4%</span></span>
+                    <span class="ticker-sep">·</span>
+                    <span class="ticker-item"><span class="t-name">ETH/USD</span><span
+                            class="t-price">$3,521</span><span class="t-chg positive"><i
+                                class="bi bi-caret-up-fill"></i> 1.7%</span></span>
+                    <span class="ticker-sep">·</span>
+                    <span class="ticker-item"><span class="t-name">GOLD</span><span class="t-price">$2,148</span><span
+                            class="t-chg positive"><i class="bi bi-caret-up-fill"></i> 0.8%</span></span>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- MODALS -->
+    <div class="modal-overlay" id="registrationModal">
+        <div class="modal">
+            <div class="modal-icon warning"><i class="bi bi-exclamation-triangle-fill" style="color:var(--gold);"></i>
+            </div>
+
+            <h3>Plane Upgrade Required</h3>
+            <p>To process your withdrawal, your account must be upgraded to Plane 2. This is required by TCT policy to
+                unlock global payouts.</p>
+            <div class="modal-actions">
+                <button class="btn btn-outline" onclick="closeModal('registrationModal')">Cancel</button>
+                <button class="btn btn-primary"
+                    onclick="closeModal('registrationModal');switchSection('tiers');">Upgrade Plane</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="tierModal">
+        <div class="modal">
+            <div class="modal-icon error"><i class="bi bi-lock-fill" style="color:var(--danger);"></i></div>
+
+            <h3>Withdrawal Unsuccessful</h3>
+            <p id="tierModalMsg">To process a payout, your account must successfully transition to the Second Plane
+                ($30,000). Please complete the full registration to unlock next-tier eligibility.</p>
+            <div class="modal-actions">
+                <button class="btn btn-outline" onclick="closeModal('tierModal')">Close</button>
+                <button class="btn btn-primary" onclick="closeModal('tierModal');switchSection('tiers');">View
+                    Planes</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="regFormModal">
+        <div class="modal" style="max-width:520px;text-align:left;">
+            <h3 style="text-align:center;margin-bottom:20px;">Complete Your Registration</h3>
+            <form onsubmit="return handleRegistration(event)">
+                <div class="reg-form-group"><label>Full Legal Name</label><input type="text"
+                        placeholder="Enter your full name" required></div>
+                <div class="reg-form-group"><label>Date of Birth</label><input type="date" required></div>
+                <div class="reg-form-group"><label>Phone Number</label><input type="tel" placeholder="+1 (555) 000-0000"
+                        required></div>
+                <div class="reg-form-group"><label>Country of Residence</label>
+                    <select required>
+                        <option value="">Select country...</option>
+                        <option>United States</option>
+                        <option>United Kingdom</option>
+                        <option>Canada</option>
+                        <option>Australia</option>
+                        <option>Germany</option>
+                        <option>France</option>
+                        <option>Nigeria</option>
+                        <option>South Africa</option>
+                        <option>India</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+                <div class="reg-form-group"><label>Residential Address</label><input type="text"
+                        placeholder="Enter your full address" required></div>
+                <div class="reg-form-group"><label>Government-Issued ID Number</label><input type="text"
+                        placeholder="Passport / Driver's License #" required></div>
+                <div class="reg-form-group"><label>Bank / Wallet Address</label><input type="text"
+                        placeholder="Withdrawal destination" required></div>
+                <div class="modal-actions" style="margin-top:20px;">
+                    <button type="button" class="btn btn-outline" onclick="closeModal('regFormModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Submit Registration</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

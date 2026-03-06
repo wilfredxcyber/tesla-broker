@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tesla Currency Team — Secure Access</title>
+    <meta name="description"
+        content="Tesla Currency Team — Secure Investor Portal. Enter your Broker ID and Demo Password.">
+    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <link rel="icon" href="logo.png" type="image/png">
+</head>
+
+<body>
+
+    <!-- ID Card Reveal -->
+    <div class="id-reveal-card" id="idRevealCard">
+        <div class="id-reveal-top">
+            <div class="idr-avatar" id="idrAvatar">G</div>
+            <div>
+                <div class="idr-name" id="idrName">Galit</div>
+                <div class="idr-sub">Premium Investor · Tier 1</div>
+            </div>
+        </div>
+        <div class="idr-verified">
+            <span class="pulse-green"></span>
+            Session Active — Identity Confirmed
+        </div>
+    </div>
+
+    <div class="login-split">
+
+        <!-- LEFT HERO PANEL -->
+        <div class="login-hero">
+            <!-- Slideshow slides -->
+            <div class="hero-slide active"
+                style="background-image:url('https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=1400&q=80');background-position:center;">
+            </div>
+            <div class="hero-slide"
+                style="background-image:url('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1400&q=80');background-position:center;">
+            </div>
+            <div class="hero-slide"
+                style="background-image:url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1400&q=80');background-position:center bottom;">
+            </div>
+            <div class="hero-slide"
+                style="background-image:url('https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1400&q=80');background-position:center;">
+            </div>
+            <div class="login-hero-overlay"></div>
+            <div class="hero-shimmer"></div>
+            <!-- Slide dots -->
+            <div class="slide-dots" id="slideDots">
+                <div class="slide-dot active" onclick="goToSlide(0)"></div>
+                <div class="slide-dot" onclick="goToSlide(1)"></div>
+                <div class="slide-dot" onclick="goToSlide(2)"></div>
+                <div class="slide-dot" onclick="goToSlide(3)"></div>
+            </div>
+
+            <div class="hero-badges">
+                <div class="hero-badge-pill"><i class="bi bi-shield-lock-fill"></i> 256-bit SSL</div>
+                <div class="hero-badge-pill"><i class="bi bi-patch-check-fill"></i> Regulated</div>
+                <div class="hero-badge-pill"><i class="bi bi-headset"></i> 24/7 Support</div>
+            </div>
+
+            <div class="login-hero-content">
+                <div class="hero-tag">
+                    <span class="hero-dot"></span>
+                    Live Portfolio Access
+                </div>
+                <h1>Your Wealth.<br>Managed with<br>Precision.</h1>
+                <p>Tesla Currency Team delivers institutional-grade investment intelligence to retail investors. Grow
+                    your
+                    portfolio with confidence.</p>
+                <div class="hero-stats">
+                    <div class="hs-item">
+                        <div class="hs-val">$2.4B+</div>
+                        <div class="hs-lbl">Assets Under Mgmt</div>
+                    </div>
+                    <div class="hero-divider"></div>
+                    <div class="hs-item">
+                        <div class="hs-val">12,400+</div>
+                        <div class="hs-lbl">Active Investors</div>
+                    </div>
+                    <div class="hero-divider"></div>
+                    <div class="hs-item">
+                        <div class="hs-val">524%</div>
+                        <div class="hs-lbl">Avg. Portfolio Growth</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT FORM PANEL -->
+        <div class="login-form-panel">
+
+            <div class="form-panel-brand">
+                <div class="brand-icon">
+                    <img src="logo.png" alt="Tesla Currency Team Logo"
+                        style="width:26px;height:26px;object-fit:contain;">
+                </div>
+                <div class="brand-text-wrap">
+                    <div class="b-name">Tesla Currency Team</div>
+                    <div class="b-sub">Secure Investor Portal</div>
+                </div>
+            </div>
+
+            <div class="form-title">Welcome back</div>
+            <div class="form-subtitle">Sign in with your Broker ID and demo password to access your portfolio.</div>
+
+            <!-- Credentials Reference -->
+            <div class="cred-card">
+                <div class="cred-card-title"><i class="bi bi-key-fill"></i> Your Login Credentials</div>
+                <div class="cred-row">
+                    <span class="cred-name">Galit</span>
+                    <span class="cred-info">
+                        <span class="cred-id">TCT-2024-001</span>
+                        <span class="cred-pass">invest2024</span>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Error -->
+            <div class="login-error" id="loginError"><i class="bi bi-x"></i> &nbsp;Invalid credentials. Please try
+                again.</div>
+
+            <!-- System Init Bar -->
+            <div class="sys-init-wrap" id="sysInitWrap">
+                <div class="sys-init-label">
+                    <span id="sysInitLabel">Authenticating</span>
+                    <span id="sysInitPct">0%</span>
+                </div>
+                <div class="sys-init-bar">
+                    <div class="sys-init-fill" id="sysInitFill"></div>
+                </div>
+            </div>
+
+            <form id="loginForm" onsubmit="return handleLogin(event)">
+                <div class="form-group">
+                    <label for="userId">Broker ID</label>
+                    <input type="text" id="userId" placeholder="e.g. TCT-2024-001" required autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="password">Demo Password</label>
+                    <input type="password" id="password" placeholder="Enter your demo password" required>
+                </div>
+                <button type="submit" class="login-btn" id="loginBtn">
+                    <span id="loginBtnText">Sign In <i class="bi bi-arrow-right"></i></span>
+                </button>
+            </form>
+
+            <div class="form-footer">
+                <div class="trust-badge"><i class="bi bi-shield-lock-fill"></i> 256-bit SSL</div>
+                <div class="trust-badge"><i class="bi bi-bank"></i> Regulated &amp; Compliant</div>
+                <div class="trust-badge"><i class="bi bi-chat-fill"></i> 24/7 Support</div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const USERS = {
+            'TCT-2024-001': { password: 'invest2024', name: 'Galit', email: 'galit@email.com', tier: 2, invested: 1000, currentValue: 8500.00, joinDate: '2026-02-20' }
+        };
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const userId = document.getElementById('userId').value.trim();
+            const password = document.getElementById('password').value;
+            const errorEl = document.getElementById('loginError');
+            const btn = document.getElementById('loginBtn');
+            const btnText = document.getElementById('loginBtnText');
+            const user = USERS[userId];
+
+            if (!user || user.password !== password) {
+                errorEl.classList.add('show');
+                setTimeout(() => errorEl.classList.remove('show'), 3200);
+                return false;
+            }
+
+            sessionStorage.setItem('currentUser', JSON.stringify({ id: userId, ...user }));
+
+            // Show progress bar
+            const sysWrap = document.getElementById('sysInitWrap');
+            const fill = document.getElementById('sysInitFill');
+            const pct = document.getElementById('sysInitPct');
+            const lbl = document.getElementById('sysInitLabel');
+            sysWrap.style.display = 'block';
+            btn.disabled = true;
+            btnText.textContent = 'Authenticating...';
+
+            const phases = ['Authenticating', 'Loading Portfolio', 'Verifying Identity', 'Session Confirmed'];
+            let progress = 0, phaseIdx = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 4 + 2;
+                if (progress >= 100) progress = 100;
+                fill.style.width = progress + '%';
+                pct.textContent = Math.floor(progress) + '%';
+                const np = Math.floor(progress / 25);
+                if (np !== phaseIdx && np < phases.length) { phaseIdx = np; lbl.textContent = phases[phaseIdx]; }
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    const initials = user.name.split(' ').map(n => n[0]).join('');
+                    document.getElementById('idrAvatar').textContent = initials;
+                    document.getElementById('idrName').textContent = user.name;
+                    document.getElementById('idRevealCard').classList.add('show');
+                    setTimeout(() => { window.location.href = 'dashboard.html'; }, 1400);
+                }
+            }, 60);
+            return false;
+        }
+    </script>
+    <!-- Slideshow JS -->
+    <script>
+        const slides = document.querySelectorAll('.hero-slide');
+        const dots = document.querySelectorAll('.slide-dot');
+        let current = 0, timer;
+        function goToSlide(n) {
+            slides[current].classList.remove('active');
+            dots[current].classList.remove('active');
+            current = n;
+            slides[current].classList.add('active');
+            dots[current].classList.add('active');
+            clearInterval(timer);
+            timer = setInterval(nextSlide, 5000);
+        }
+        function nextSlide() { goToSlide((current + 1) % slides.length); }
+        timer = setInterval(nextSlide, 5000);
+    </script>
+</body>
+
+</html>
